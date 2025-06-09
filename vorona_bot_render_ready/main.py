@@ -10,9 +10,21 @@ bot = Bot(token=API_TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 
 menu_kb = ReplyKeyboardMarkup(
-    keyboard=[[KeyboardButton(text="👤 Кто я такой")]],
+    keyboard=[
+        [KeyboardButton(text="🚗 Рассчитай мне авто")],
+        [KeyboardButton(text="📄 Изучить договор и прочие документы")],
+        [KeyboardButton(text="🛠 Как всё работает?")],
+        [KeyboardButton(text="💬 Оставить сообщение")],
+        [KeyboardButton(text="👤 Кто я такой")],
+        [KeyboardButton(text="⚖️ Почему мы делаем это честно")],
+        [KeyboardButton(text="💬 Хочу поговорить с человеком")]
+    ],
     resize_keyboard=True
 )
+
+@dp.message(Command("start"))
+async def start(message: Message):
+    await message.answer("Здравствуйте! Это бот-помощник компании vorona.car.\nВыберите то, что вас интересует:", reply_markup=menu_kb)
 
 @dp.message(F.text == "👤 Кто я такой")
 async def who_am_i(message: Message):
@@ -24,10 +36,6 @@ async def who_am_i(message: Message):
         "Вот Instagram: @vorona.car\n\n"
         "Я рядом, если что."
     ))
-
-@dp.message(Command("start"))
-async def start(message: Message):
-    await message.answer("Привет! Выбери, что тебя интересует:", reply_markup=menu_kb)
 
 async def main():
     await dp.start_polling(bot)
