@@ -3,6 +3,7 @@ import asyncio
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton, FSInputFile
 from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.filters import Command
 
 API_TOKEN = "7886670102:AAHyVJL0PDn0APmrpe8Lf1gwBTHwOlojm0U"
 bot = Bot(token=API_TOKEN)
@@ -24,7 +25,7 @@ async def who_am_i(message: Message):
         "Я рядом, если что."
     ))
 
-@dp.message(commands=["start"])
+@dp.message(Command("start"))
 async def start(message: Message):
     await message.answer("Привет! Выбери, что тебя интересует:", reply_markup=menu_kb)
 
