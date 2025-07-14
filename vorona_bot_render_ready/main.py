@@ -126,6 +126,34 @@ async def talk_to_human(message: Message):
         "Можем обсудить всё голосом или перепиской — как вам комфортнее."
     )
 
+
+@dp.message(F.text == "🚗 Рассчитай мне авто")
+async def choose_car_flow(message: Message):
+    await message.answer("Выберите подходящий вариант:", reply_markup=car_choice_kb)
+
+@dp.message(F.text == "✅ Я точно знаю, какой автомобиль хочу, рассчитайте мне среднюю стоимость")
+async def car_exact(message: Message, state: FSMContext):
+    await state.set_state(Form.car_exact)
+    await message.answer("Напишите желаемую марку, модель, год, кузов, привод и цвет.\nЧем подробнее, тем точнее будет расчет.", reply_markup=ReplyKeyboardRemove())
+
+@dp.message(Form.car_exact)
+async def process_car_exact(message: Message, state: FSMContext):
+    await bot.send_message(ADMIN_ID, f"[ТОЧНЫЙ ЗАПРОС ОТ {message.from_user.full_name} (@{message.from_user.username})]:\n{message.text}\n\nЧтобы ответить: /ответ {message.from_user.id} [ваш текст]")
+    await message.answer("Спасибо за ваш запрос! Я рассмотрю его и обязательно отвечу в ближайшее время — прямо здесь, в этом боте.", reply_markup=menu_kb)
+    await state.clear()
+
+@dp.message(F.text == "🤔 Мне нужен совет, я знаю только бюджет и примерный запрос")
+async def car_help(message: Message, state: FSMContext):
+    await state.set_state(Form.car_help)
+    await message.answer("Напишите примерный бюджет и какую машину вы хотите.\nНе стесняйтесь, даже если “красненькую” — это вся информация.", reply_markup=ReplyKeyboardRemove())
+
+@dp.message(Form.car_help)
+async def process_car_help(message: Message, state: FSMContext):
+    await bot.send_message(ADMIN_ID, f"[ПОМОЩЬ С ВЫБОРОМ ОТ {message.from_user.full_name} (@{message.from_user.username})]:\n{message.text}\n\nЧтобы ответить: /ответ {message.from_user.id} [ваш текст]")
+    await message.answer("Спасибо! Я изучу ваш запрос и отвечу вам прямо здесь в ближайшее время.", reply_markup=menu_kb)
+    await state.clear()
+
+
 async def main():
     await dp.start_polling(bot)
 
