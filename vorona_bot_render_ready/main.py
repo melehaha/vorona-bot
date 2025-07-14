@@ -171,3 +171,15 @@ async def reply_command(message: Message):
         await message.answer("✅ Ответ отправлен пользователю.")
     except Exception as e:
         await message.answer(f"❌ Ошибка при отправке: {e}")
+
+
+@dp.message(Command("ответ"))
+async def reply_command(message: Message):
+    try:
+        parts = message.text.split(maxsplit=2)
+        user_id = int(parts[1])
+        text = parts[2]
+        await bot.send_message(user_id, text)
+        await message.answer("✅ Ответ отправлен пользователю.")
+    except Exception as e:
+        await message.answer(f"❌ Ошибка при отправке: {e}")
