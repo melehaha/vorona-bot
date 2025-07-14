@@ -51,7 +51,7 @@ docs_kb = ReplyKeyboardMarkup(
 
 @dp.message(Command("start"))
 async def start(message: Message):
-    await message.answer("Здравствуйте! Это бот-помощник компании vorona.car.\nВыберите то, что вас интересует:", reply_markup=menu_kb)
+    await message.answer("Здравствуйте! Это бот-помощник компании https://instagram.com/vorona.car\nВыберите то, что вас интересует:", reply_markup=menu_kb)
 
 @dp.message(F.text == "👤 Кто я такой?")
 async def who_am_i(message: Message):
