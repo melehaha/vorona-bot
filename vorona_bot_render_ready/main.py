@@ -154,23 +154,28 @@ async def process_car_help(message: Message, state: FSMContext):
     await state.clear()
 
 
-async def main():
-    await dp.start_polling(bot)
-
-if __name__ == "__main__":
-    asyncio.run(main())
 
 
 @dp.message(Command("ответ"))
 async def reply_command(message: Message):
     try:
+        print(">> /ответ команда получена")
         parts = message.text.split(maxsplit=2)
         user_id = int(parts[1])
         text = parts[2]
+        print(f">> Пытаюсь отправить сообщение user_id={user_id}, текст='{text}'")
         await bot.send_message(user_id, text)
         await message.answer("✅ Ответ отправлен пользователю.")
     except Exception as e:
+        print(f">> Ошибка: {e}")
         await message.answer(f"❌ Ошибка при отправке: {e}")
+
+
+async def main():
+    await dp.start_polling(bot)
+
+if __name__ == "__main__":
+    asyncio.run(main())
 
 
 @dp.message(Command("ответ"))
